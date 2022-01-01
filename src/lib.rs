@@ -3,6 +3,8 @@
 use actix_web::{web, App, HttpRequest, HttpResponse, HttpServer};
 // Include an import to run a server with actix-web
 use actix_web::dev::Server;
+// Include TcpListener to discover the port the OS has provided for the webserver
+use std::net::TcpListener;
 
 /*async fn greet(req: HttpRequest) -> impl Responder {
     let name = req.match_info().get("name").unwrap_or("World!");
@@ -16,7 +18,8 @@ async fn health_check(_req: HttpRequest) -> HttpResponse {
 }
 
 // change the run() function to return a Result enum that contains a Server type or an Error
-pub fn run() -> Result<Server, std::io::Error> {
+// TcpListener::local_addr will return a SocketAddr which exposes the bound port via .port()
+pub fn run(listener: TcpListener) -> Result<Server, std::io::Error> {
     let server = HttpServer::new(|| {
         App::new()
             /* // Add route for the root path registration
@@ -26,7 +29,7 @@ pub fn run() -> Result<Server, std::io::Error> {
             // Add route for the health check handler registration
             .route("/health_check", web::get().to(health_check))
     })
-    .bind("127.0.0.1:8000")?
+    .listen(listener)?
     .run();
     // .await is dropped from the library
 
