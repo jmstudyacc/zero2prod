@@ -5,6 +5,16 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+# Single Square Brackets to indicate that only a single Library file can be present
+[lib]
+path = "src/lib.rs"
+
+# Double Square Brackets to indicate that you can have an array of Binary files here
+[[bin]]
+path = "src/main.rs"
+name = "zero2prod"
+
 [dependencies]
 actix-web = "=4.0.0-beta.16"
+reqwest = "0.11"
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
