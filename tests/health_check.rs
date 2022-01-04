@@ -28,7 +28,7 @@ async fn subscribe_returns_200_for_valid_form_data() {
     // Arrange
     let app_address = spawn_app();
     let client = reqwest::Client::new();
-    let body = "james%20miles&email=jmstudyacc%40gmail.com";
+    let body = "name=james%20miles&email=jmstudyacc%40gmail.com";
 
     // Act
     let response = client
@@ -40,6 +40,7 @@ async fn subscribe_returns_200_for_valid_form_data() {
         .expect("Failed to execute request.");
 
     // Assert
+    // At present this assertion does not tell us the business purpose has been achieved
     assert_eq!(200, response.status().as_u16());
 }
 

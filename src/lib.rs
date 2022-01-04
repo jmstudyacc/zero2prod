@@ -11,15 +11,22 @@ use std::net::TcpListener;
     format!("Hello {}", name)
 }*/
 
+#[derive(serde::Deserialize)]
+struct FormData {
+    email: String,
+    name: String,
+}
+
 async fn health_check(_req: HttpRequest) -> HttpResponse {
     // .finish() sets an empty body & builds the HttpResponse
     // impl Responder enables us to drop the .finish()
     HttpResponse::Ok().finish()
 }
 
-// Start simple with a 200 return for the handler
-async fn subscribe(_req: HttpRequest) -> HttpResponse {
-    // this will not parse the body of the request, as such the input validation tests will not fail
+// Extracts form data using serde
+// This handler is only called if the content-type is *x-www-form-urlencoded*
+// Content of the request could be deserialized to a 'FormData' struct
+async fn subscribe(_form: web::Form<FormData>) -> HttpResponse {
     HttpResponse::Ok().finish()
 }
 
