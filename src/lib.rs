@@ -17,6 +17,12 @@ async fn health_check(_req: HttpRequest) -> HttpResponse {
     HttpResponse::Ok().finish()
 }
 
+// Start simple with a 200 return for the handler
+async fn subscribe(_req: HttpRequest) -> HttpResponse {
+    // this will not parse the body of the request, as such the input validation tests will not fail
+    HttpResponse::Ok().finish()
+}
+
 // change the run() function to return a Result enum that contains a Server type or an Error
 // TcpListener::local_addr will return a SocketAddr which exposes the bound port via .port()
 pub fn run(listener: TcpListener) -> Result<Server, std::io::Error> {
@@ -28,6 +34,7 @@ pub fn run(listener: TcpListener) -> Result<Server, std::io::Error> {
             .route("/{name}", web::get().to(greet))*/
             // Add route for the health check handler registration
             .route("/health_check", web::get().to(health_check))
+            .route("/subscriptions", web::post().to(subscribe))
     })
     .listen(listener)?
     .run();
