@@ -1,5 +1,9 @@
 //! src/lib.rs
 
+pub mod configuration;
+pub mod routes;
+pub mod startup;
+
 use actix_web::{web, App, HttpRequest, HttpResponse, HttpServer};
 // Include an import to run a server with actix-web
 use actix_web::dev::Server;
@@ -41,6 +45,7 @@ pub fn run(listener: TcpListener) -> Result<Server, std::io::Error> {
             .route("/{name}", web::get().to(greet))*/
             // Add route for the health check handler registration
             .route("/health_check", web::get().to(health_check))
+            // new entry in the routing table for POST /subscription requests
             .route("/subscriptions", web::post().to(subscribe))
     })
     .listen(listener)?
